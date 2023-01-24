@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import FilmList from "./components/FilmList";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
+const App = () => {
+  const [films, setFilms] = useState([]);
+
+  const getFilmRequest = async () => {
+    const url = "http://www.omdbapi.com/?s=harry potter&apikey=b2cd408e";
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    console.log(responseJson);
+    setFilms(responseJson.Search);
+  };
+
+  useEffect(() => {
+    getFilmRequest();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container-fluid film-css">
+      <div className="row">
+        <FilmList films={films} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
